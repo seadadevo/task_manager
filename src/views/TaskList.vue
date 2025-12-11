@@ -1,5 +1,24 @@
 <template>
-  <div class="p-[2rem] max-w-[1200px] my-0 mx-auto">
+  <div class="p-8 max-w-[1200px] my-0 mx-auto">
+
+    <select 
+            :value="taskStore.selectedCategoryId"
+            @change="(e) => {
+              const target = e.target as HTMLSelectElement;
+              taskStore.filterByCategory(target.value ? Number(target.value) : null);
+            }"
+            class="p-2 border rounded-md bg-white shadow-sm outline-none mb-4"
+        >
+            <option :value="null">All Categories</option>
+            <option 
+                v-for="category in categoryStore.categories" 
+                :key="category.id" 
+                :value="category.id"
+            >
+                {{ category.name }}
+            </option>
+        </select>
+
     <!-- load -->
     <div
       v-if="taskStore.tasks.length === 0"
@@ -36,7 +55,8 @@
             :alt="task.title"
             class="w-full h-full object-cover"
             @error="(e) => {
-              e.target.src = anotherimage;
+              const img = e.target as HTMLImageElement;
+              img.src = anotherimage;
             }"
           />
         </div>
@@ -96,18 +116,18 @@
   <div class="flex justify-center items-center gap-4 mt-8">
     <button 
         @click="taskStore.prevPage" 
-        :disabled="taskStore.currectPage === 1"
-        class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+        :disabled="taskStore.currentPage === 1"
+        class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300"
     >
         Previous
     </button>
 
-    <span class="font-bold">Page {{ taskStore.currectPage }}</span>
+    <span class="font-bold">Page {{ taskStore.currentPage }}</span>
 
     <button 
         @click="taskStore.nextPage" 
         :disabled="!taskStore.isThereMore"
-        class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+        class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50 hover:bg-blue-700"
     >
         Next
     </button>
