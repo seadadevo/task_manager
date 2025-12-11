@@ -32,16 +32,12 @@
       >
         <div class="mb-3 h-40 bg-gray-100 rounded overflow-hidden">
           <img
-            v-if="task.image_url"
-            :src="task.image_url"
+            :src="task.image_url || anotherimage"
             :alt="task.title"
             class="w-full h-full object-cover"
-          />
-          <img
-            v-else
-            :src="anotherimage"
-            :alt="task.title"
-            class="w-full h-full object-cover"
+            @error="(e) => {
+              e.target.src = anotherimage;
+            }"
           />
         </div>
 
@@ -96,6 +92,26 @@
       </div>
     </div>
   </div>
+
+  <div class="flex justify-center items-center gap-4 mt-8">
+    <button 
+        @click="taskStore.prevPage" 
+        :disabled="taskStore.currectPage === 1"
+        class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+    >
+        Previous
+    </button>
+
+    <span class="font-bold">Page {{ taskStore.currectPage }}</span>
+
+    <button 
+        @click="taskStore.nextPage" 
+        :disabled="!taskStore.isThereMore"
+        class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+    >
+        Next
+    </button>
+</div>
 </template>
 
 <script setup lang="ts">
