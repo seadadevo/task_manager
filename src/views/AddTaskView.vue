@@ -9,6 +9,7 @@
                 class= "w-full p-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500 "
                 placeholder="add title.."
                 >
+                <span v-if="errors.title" class="text-red-500 text-sm">{{errors.title}}</span>
             </div>
             <div>
                 <label class="block test-sm font-medium text-gray-800 mb-1">Category *</label>
@@ -20,6 +21,7 @@
                 v-for="cat in categoryStore.categories" :key="cat.id"
                 :value="cat.id">{{ cat.name }}</option>
                 </select>
+                <span v-if="errors.category_id" class="text-red-500 text-sm">{{errors.category_id}}</span>
             </div>
 
             <div>
@@ -58,7 +60,7 @@
             <div class="flex gap-4 pt-4">
                 <button
                 type="button"
-                @click="$router.push('/')"
+                @click="router.push('/')"
                 class="flex-1 py-2 px-4 border border-gray-300 rounded-md">
                 Cancel
                 </button>
@@ -105,7 +107,28 @@
             categoryStore.fetchCategories();
         }
     })
+
+    const validate = () => {
+        let isItValid = true;
+        errors.title = '';
+        errors.category_id = '';
+        
+        if(!form.title.trim()) {
+            errors.title = 'Title is required';
+            isItValid = false;
+        }
+        if(!form.category_id || form.category_id === 0 ) {
+            errors.category_id = 'Category is required';
+            isItValid = false;
+        }
+
+        return isItValid;
+    }
+
+
     const  handleSubmit =async () => {
+        if(!validate()) return;
+
         isSubmitting.value = true;
         try{
             await taskStore.addTask(form);
