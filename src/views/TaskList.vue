@@ -54,6 +54,7 @@
         }"
       >
         <div class="mb-3 h-40 bg-gray-100 rounded overflow-hidden">
+            <router-link :to="`/tasks/${task.id}`">
           <img
             :src="task.image_url || anotherimage"
             :alt="task.title"
@@ -63,6 +64,7 @@
               img.src = anotherimage;
             }"
           />
+          </router-link>
         </div>
 
         <div class="mb-2">
@@ -82,8 +84,9 @@
             {{ getInfoByCategoryId(task.category_id)?.name || "Unknown" }}
           </span>
         </div>
-
-        <h3 class="text-lg font-semibold mb-2">{{ task.title }}</h3>
+        <router-link :to="`/tasks/${task.id}`">
+            <h3 class="text-lg font-semibold mb-2">{{ task.title }}</h3>
+        </router-link>
 
         <p class="mb-2">
           <span
