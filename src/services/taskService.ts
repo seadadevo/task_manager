@@ -31,7 +31,7 @@ export const updateTask = async (id: number, updates: Partial<Task>): Promise<Ta
 
 export const createTask = async (task: IAddTask): Promise<Task> => {
     try {
-        const res = await instance.post('/task', task);
+        const res = await instance.post('/tasks', task);
         return res.data[0];
     } catch (error) {
         console.error('Error is:', error);

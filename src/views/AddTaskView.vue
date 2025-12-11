@@ -65,8 +65,9 @@
 
                 <button
                 type="submit"
-                class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex justify-center items-center gap-2">
-                Add Task
+                class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-md  disabled:opacity-50 flex justify-center items-center gap-2">
+                <span v-if="isSubmitting" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                {{ isSubmitting ? 'loading..' : 'Add Task' }}
                 </button>
             </div>
 
@@ -85,6 +86,8 @@
     const taskStore = useTasksStore();
     const categoryStore = useCategoryStore();
 
+    const isSubmitting = ref(false);
+
     const form = reactive<IAddTask>({
         title: '',
         description: '',
@@ -93,12 +96,26 @@
         due_date: '',
     })
 
+    const errors = reactive({
+        title: '',
+        category_id: ''
+    });
     onMounted(() => {
         if(categoryStore.categories.length === 0) {
             categoryStore.fetchCategories();
         }
     })
-    function handleSubmit() {}
+    const  handleSubmit =async () => {
+        isSubmitting.value = true;
+        try{
+            await taskStore.addTask(form);
+            router.push('/')
+        } catch(err) {
+            console.error(err)
+        } finally {
+            isSubmitting.value = false;
+        }
+    }
 </script>
 
 <style lang="scss" scoped>
