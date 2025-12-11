@@ -117,7 +117,7 @@
 
     <div class="flex justify-end mt-3 border-t pt-3 gap-3">
     <button
-       
+       @click="handleDelete(task.id)"
         class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-l flex items-center gap-2"
     >
         Delete
@@ -172,18 +172,15 @@ const getInfoByCategoryId = (categoryId: number): Category | undefined => {
   return categoryStore.categories.find((c) => c.id === categoryId);
 };
 
-const handleDelete = async (taskId: number) => {
-  if (!confirm('Are you sure you want to delete this task?')) {
-    return;
-  }
-  
-  try {
-    await taskStore.deleteTask(taskId);
-  } catch (err) {
-    console.error(err);
-    alert('Failed to delete task');
-  }
-};
+const handleDelete = async (id: number) => {
+    if (confirm("Are you sure you want to delete this task?")) {
+        try {
+            await taskStore.removeTask(id);
+        } catch (error) {
+            console.error('Error at deleting:', error);
+        }
+    }
+}
 
 onMounted(async () => {
   await taskStore.fetchTasks();

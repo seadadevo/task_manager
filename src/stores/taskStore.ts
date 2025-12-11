@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { createTask, getTaskById, getTasks, updateTask } from "../services/taskService";
+import { createTask, deleteTask, getTaskById, getTasks, updateTask } from "../services/taskService";
 import type { IAddTask, Task } from "../types";
 
 export const useTasksStore = defineStore('tasks', () => {
@@ -100,6 +100,14 @@ export const useTasksStore = defineStore('tasks', () => {
         return await getTaskById(id);
     }
 
+    const removeTask = async(id:number) => {
+        try {
+            await deleteTask(id);
+            tasks.value = tasks.value.filter(t => t.id !== id);
+        } catch (err) {
+            console.error(err)
+        }
+    }
     return {
         tasks,
         currentPage,
@@ -111,7 +119,8 @@ export const useTasksStore = defineStore('tasks', () => {
         prevPage,
         toggleTaskComplete,
         addTask,
-        updateTaskDetails
-        ,getSingleTask
+        updateTaskDetails,
+        getSingleTask,
+        removeTask
     }
 })

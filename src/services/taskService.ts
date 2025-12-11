@@ -50,3 +50,11 @@ export const getTaskById = async (id: number): Promise<Task | null> => {
     }
 }
 
+export const deleteTask = async(id:number): Promise<void> => {
+    try {
+        await instance.delete(`/tasks?id=eq.${id}`)
+    } catch (err) {
+        console.error(err)
+        throw err;
+    }
+}
