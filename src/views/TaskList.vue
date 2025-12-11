@@ -1,17 +1,15 @@
 <template>
   <div class="p-8 max-w-[1200px] my-0 mx-auto">
-    <router-link to="/add-task"
-          class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm whitespace-nowrap"
-        >
-    Add Task
-    </router-link>
-    <select 
+    <!-- Filter Section -->
+    <div class="mb-6 flex items-center gap-4">
+      <label class="text-sm font-medium text-gray-700">Filter by Category:</label>
+      <select 
             :value="taskStore.selectedCategoryId"
             @change="(e) => {
               const target = e.target as HTMLSelectElement;
               taskStore.filterByCategory(target.value ? Number(target.value) : null);
             }"
-            class="p-2 border rounded-md bg-white shadow-sm outline-none mb-4"
+            class="p-2 border rounded-md bg-white shadow-sm outline-none"
         >
             <option :value="null">All Categories</option>
             <option 
@@ -22,6 +20,7 @@
                 {{ category.name }}
             </option>
         </select>
+    </div>
 
     <!-- load -->
    <div v-if="taskStore.isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
