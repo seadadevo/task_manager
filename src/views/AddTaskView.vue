@@ -83,10 +83,12 @@
     import { useTasksStore } from '../stores/taskStore';
     import { useCategoryStore } from '../stores/categoryStore';
     import type { IAddTask } from '../types';
+    import { useToast } from 'vue-toastification';
 
     const router = useRouter()
     const taskStore = useTasksStore();
     const categoryStore = useCategoryStore();
+    const toast = useToast();
 
     const isSubmitting = ref(false);
 
@@ -132,9 +134,11 @@
         isSubmitting.value = true;
         try{
             await taskStore.addTask(form);
+            toast.success('Task created successfully!');
             router.push('/')
         } catch(err) {
             console.error(err)
+            toast.error('Failed to create task');
         } finally {
             isSubmitting.value = false;
         }

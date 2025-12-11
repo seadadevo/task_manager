@@ -2,8 +2,10 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { createTask, deleteTask, getTaskById, getTasks, updateTask } from "../services/taskService";
 import type { IAddTask, Task } from "../types";
+import { useToast } from "vue-toastification";
 
 export const useTasksStore = defineStore('tasks', () => {
+    const toast = useToast();
     const tasks = ref<Task[]>([]);
     
     const isLoading = ref(false);
@@ -66,9 +68,11 @@ export const useTasksStore = defineStore('tasks', () => {
 
             try {
                 await updateTask(taskId, { completed: newStatus })
+                toast.success(newStatus ? 'Task marked as completed!' : 'Task marked as incomplete!');
             } catch (error) {
                 task.completed = currentStatus; 
                 console.error(error);
+                toast.error('Failed to update task status');
             }
         }
     }

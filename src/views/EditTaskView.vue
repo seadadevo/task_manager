@@ -93,6 +93,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useTasksStore } from '../stores/taskStore';
 import { useCategoryStore } from '../stores/categoryStore';
 import type { IAddTask } from '../types';
+import { useToast } from 'vue-toastification';
 
 
 const router = useRouter();
@@ -100,6 +101,7 @@ const route = useRoute();
 
 const taskStore = useTasksStore();
 const categoryStore = useCategoryStore();
+const toast = useToast();
 
 
 const isSubmitting = ref(false);
@@ -129,7 +131,7 @@ onMounted(async () => {
         form.priority = task.priority;
         form.due_date = task.due_date || ''; 
     } else {
-        alert('Task not found!');
+        toast.error('Task not found!');
         router.push('/');
     }
     
@@ -139,9 +141,11 @@ const handleSubmit = async () => {
   isSubmitting.value = true;
   try {
     await taskStore.updateTaskDetails(taskId, form);
+    toast.success('Task updated successfully!');
     router.push('/');
   } catch (err) {
     console.error(err)
+    toast.error('Failed to update task');
   } finally {
     isSubmitting.value = false;
   }

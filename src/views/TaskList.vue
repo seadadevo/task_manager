@@ -182,9 +182,11 @@ import { useTasksStore } from "../stores/taskStore";
 import { useCategoryStore } from "../stores/categoryStore";
 import anotherimage from "./../assets/insta.jpg";
 import type { Category } from "../types";
+import { useToast } from "vue-toastification";
 
 const taskStore = useTasksStore();
 const categoryStore = useCategoryStore();
+const toast = useToast();
 
 const getInfoByCategoryId = (categoryId: number): Category | undefined => {
   return categoryStore.categories.find((c) => c.id === categoryId);
@@ -194,8 +196,10 @@ const handleDelete = async (id: number) => {
     if (confirm("Are you sure you want to delete this task?")) {
         try {
             await taskStore.removeTask(id);
+            toast.success('Task deleted successfully!');
         } catch (error) {
             console.error('Error at deleting:', error);
+            toast.error('Failed to delete task');
         }
     }
 }
