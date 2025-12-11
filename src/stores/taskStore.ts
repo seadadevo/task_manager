@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { createTask, getTasks, updateTask } from "../services/taskService";
+import { createTask, getTaskById, getTasks, updateTask } from "../services/taskService";
 import type { IAddTask, Task } from "../types";
 
 export const useTasksStore = defineStore('tasks', () => {
@@ -73,6 +73,33 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
+    const updateTaskDetails = async (id: number, updates: IAddTask) => {
+        try {
+            await updateTask(id, updates);
+            const index = tasks.value.findIndex(t => t.id === id);
+            if (index !== -1) {
+                tasks.value[index] = { 
+                    ...tasks.value[index], 
+                    title: updates.title,
+                    description: updates.description,
+                    priority: updates.priority,
+                    category_id: updates.category_id,
+                    due_date: updates.due_date,
+                    image_url: updates.image_url
+                };
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    }
+
+    const getSingleTask = async (id: number): Promise<Task | null> => {
+      const existingTask = tasks.value.find(t => t.id === id);
+        if (existingTask) return existingTask;
+        return await getTaskById(id);
+    }
+
     return {
         tasks,
         currentPage,
@@ -83,6 +110,8 @@ export const useTasksStore = defineStore('tasks', () => {
         nextPage,
         prevPage,
         toggleTaskComplete,
-        addTask
+        addTask,
+        updateTaskDetails
+        ,getSingleTask
     }
 })

@@ -114,10 +114,29 @@
         {{ task.completed ? "Completed" : "Mark complete" }}
     </span>
 </label>
+
+    <div class="flex justify-end mt-3 border-t pt-3 gap-3">
+    <button
+       
+        class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-l flex items-center gap-2"
+    >
+        Delete
+    </button>
+    
+    <router-link 
+        :to="`/edit/${task.id}`"
+        class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg inline-flex items-center gap-2"
+    >
+        
+        Edit
+    </router-link>
+</div>
+
       </div>
     </div>
   </div>
 
+  <!-- ! Pagaination -->
   <div class="flex justify-center items-center gap-4 mt-8">
     <button 
         @click="taskStore.prevPage" 
@@ -151,6 +170,19 @@ const categoryStore = useCategoryStore();
 
 const getInfoByCategoryId = (categoryId: number): Category | undefined => {
   return categoryStore.categories.find((c) => c.id === categoryId);
+};
+
+const handleDelete = async (taskId: number) => {
+  if (!confirm('Are you sure you want to delete this task?')) {
+    return;
+  }
+  
+  try {
+    await taskStore.deleteTask(taskId);
+  } catch (err) {
+    console.error(err);
+    alert('Failed to delete task');
+  }
 };
 
 onMounted(async () => {

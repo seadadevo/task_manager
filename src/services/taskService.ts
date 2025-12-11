@@ -38,3 +38,15 @@ export const createTask = async (task: IAddTask): Promise<Task> => {
         throw error;
     }
 }
+
+export const getTaskById = async (id: number): Promise<Task | null> => {
+    try {
+        const res = await instance.get(`/tasks?id=eq.${id}`);
+        if (res.data.length === 0) return null;
+        return res.data[0];
+    } catch (error) {
+        console.error('Get Task Error:', error);
+        throw error;
+    }
+}
+

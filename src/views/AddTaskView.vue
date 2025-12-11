@@ -79,7 +79,7 @@
 
 <script setup lang="ts">
     import { ref, reactive, onMounted } from 'vue';
-    import { useRoute, useRouter } from 'vue-router';
+    import {  useRouter } from 'vue-router';
     import { useTasksStore } from '../stores/taskStore';
     import { useCategoryStore } from '../stores/categoryStore';
     import type { IAddTask } from '../types';
