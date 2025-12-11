@@ -6,12 +6,18 @@ import type { IAddTask, Task } from "../types";
 export const useTasksStore = defineStore('tasks', () => {
     const tasks = ref<Task[]>([]);
     
+    const isLoading = ref(false);
+    const error = ref<string | null>(null);
+
+
     const currentPage = ref(1);
     const limit = ref(6);
     const isThereMore = ref(true);
     const selectedCategoryId = ref<number | null>(null); 
 
     const fetchTasks = async () => {
+        isLoading.value = true;
+        error.value = null;
         try {
             const data = await getTasks(currentPage.value, limit.value, selectedCategoryId.value);
             
@@ -22,8 +28,11 @@ export const useTasksStore = defineStore('tasks', () => {
             }
 
             tasks.value = data;
-        } catch (error) {
-            console.error('Error fetching tasks:', error);
+        } catch (err) {
+            console.error('Error fetching tasks:', err);
+            error.value = 'faild to load tasks. check your connection!'
+        } finally {
+            isLoading.value = false;
         }
     }
     // null => ALL
@@ -110,6 +119,8 @@ export const useTasksStore = defineStore('tasks', () => {
     }
     return {
         tasks,
+        isLoading,
+        error,
         currentPage,
         isThereMore,
         selectedCategoryId, 

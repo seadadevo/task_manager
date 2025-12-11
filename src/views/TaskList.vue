@@ -24,25 +24,40 @@
         </select>
 
     <!-- load -->
-    <div
-      v-if="taskStore.tasks.length === 0"
-      class="mx-auto w-full max-w-sm rounded-md border border-blue-300 p-4"
-    >
-      <div class="flex animate-pulse space-x-4">
-        <div class="size-10 rounded-full bg-gray-200"></div>
-        <div class="flex-1 space-y-6 py-1">
-          <div class="h-2 rounded bg-gray-200"></div>
-          <div class="space-y-3">
-            <div class="grid grid-cols-3 gap-4">
-              <div class="col-span-2 h-2 rounded bg-gray-200"></div>
-              <div class="col-span-1 h-2 rounded bg-gray-200"></div>
+   <div v-if="taskStore.isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+       <div v-for="n in 3" :key="n" class="mx-auto w-full rounded-md border border-gray-200 p-4 shadow">
+          <div class="animate-pulse flex space-x-4">
+            <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+            <div class="flex-1 space-y-6 py-1">
+              <div class="h-2 bg-slate-200 rounded"></div>
+              <div class="space-y-3">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="h-2 bg-slate-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-slate-200 rounded col-span-1"></div>
+                </div>
+                <div class="h-2 bg-slate-200 rounded"></div>
+              </div>
             </div>
-            <div class="h-2 rounded bg-gray-200"></div>
           </div>
-        </div>
-      </div>
+       </div>
     </div>
+    <!-- error -->
+     <div v-else-if="taskStore.error" class="text-center bg-red-50 py-10 rounded-md border-red-100">
+        <h3 class="text-xl font-bold text-red-700 mb-2">Oops! Something went wrong</h3>
+        <p class="text-red-600 mb-6">{{ taskStore.error }}</p>
+        <button 
+            @click="taskStore.fetchTasks()" 
+            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        >
+            Try Again
+        </button>
+    </div>
+    <!-- no tasks -->
+     <div v-else-if="taskStore.tasks.length === 0" class="text-center py-16 bg-gray-50 rounded-lg border border-dashed border-gray-300">
 
+        <h3 class="text-xl font-medium text-gray-900 mb-2">No tasks found</h3>        
+    </div>
+    <!-- tasks -->
     <div v-else class="flex flex-col sm:flex-row items-center gap-4 flex-wrap">
       <div
         v-for="task in taskStore.tasks"
