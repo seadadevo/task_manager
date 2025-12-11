@@ -138,14 +138,14 @@
            <div class="flex items-center gap-2">
               <router-link 
                  :to="`/edit/${task.id}`"
-                 class="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-blue-50 hover:text-blue-600 transition-all"
+                 class="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 text-gray-400 hover:bg-blue-50 hover:text-blue-600 transition-all"
               >
                  <Pencil :size="14" />
               </router-link>
               
               <button
                  @click="handleDelete(task.id)"
-                 class="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all"
+                 class="w-12 h-12 rounded-full cursor-pointer flex items-center justify-center bg-gray-200 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all"
               >
                  <Trash2 :size="14" />
               </button>
