@@ -3,9 +3,7 @@ import TaskList from '../views/TaskList.vue';
 import AddTaskView from '../views/AddTaskView.vue';
 import EditTaskView from '../views/EditTaskView.vue';
 import TaskDetailView from '../views/TaskDetailView.vue';
-
-
-// import NotFoundView from '@/view/NotFoundView.vue';
+import NotFoundView from '../views/NotFoundView.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,12 +27,12 @@ const router = createRouter({
             path: '/tasks/:id',
             name: 'task-detail',
             component: TaskDetailView
-    }
-        // {
-        //     path: '/:pathMatch(.*)*',
-        //     name: 'not-found',
-        //     component: NotFoundView,
-        // },
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: NotFoundView,
+        },
     ]
 })
 
