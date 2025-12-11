@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getTasks } from "../services/taskService";
+import { getTasks, updateTask } from "../services/taskService";
 import type { Task } from "../types";
 
 export const useTasksStore = defineStore('tasks', () => {
@@ -49,6 +49,21 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
+    const toggleTaskComplete = async (taskId: number, currentStatus: boolean) => {
+        const task = tasks.value.find(t => t.id === taskId);
+        if(task) {
+            const newStatus = !currentStatus;
+            task.completed = newStatus;
+
+            try {
+                await updateTask(taskId, { completed: newStatus })
+            } catch (error) {
+                task.completed = currentStatus; 
+                console.error(error);
+            }
+        }
+    }
+
     return {
         tasks,
         currentPage,
@@ -57,6 +72,7 @@ export const useTasksStore = defineStore('tasks', () => {
         filterByCategory, 
         fetchTasks,
         nextPage,
-        prevPage
+        prevPage,
+        toggleTaskComplete
     }
 })

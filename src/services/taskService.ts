@@ -18,3 +18,13 @@ export const getTasks = async (page: number = 1, limit: number = 6, categoryId?:
         throw error;
     }
 }
+
+export const updateTask = async (id: number, updates: Partial<Task>): Promise<Task> => {
+    try {
+        const res = await instance.patch(`/tasks?id=eq.${id}`, updates)
+        return res.data[0];
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+}

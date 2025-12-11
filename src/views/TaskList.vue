@@ -100,15 +100,16 @@
 
         <!-- completed status => checkbox -->
         <label class="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            :checked="task.completed"
-            class="w-4 h-4 text-blue-600 rounded"
-          />
-          <span class="text-sm">{{
-            task.completed ? "Completed" : "Mark complete"
-          }}</span>
-        </label>
+    <input
+        type="checkbox"
+        :checked="task.completed"
+        @change="taskStore.toggleTaskComplete(task.id, task.completed)"
+        class="w-4 h-4 text-blue-600 rounded"
+    />
+    <span class="text-sm">
+        {{ task.completed ? "Completed" : "Mark complete" }}
+    </span>
+</label>
       </div>
     </div>
   </div>
