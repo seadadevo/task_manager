@@ -1,5 +1,5 @@
 import { instance } from ".";
-import type { Task } from "../types";
+import type { IAddTask, Task } from "../types";
 
 export const getTasks = async (page: number = 1, limit: number = 6, categoryId?: number | null): Promise<Task[]> => {
     const offset = (page - 1) * limit;
@@ -25,6 +25,16 @@ export const updateTask = async (id: number, updates: Partial<Task>): Promise<Ta
         return res.data[0];
     } catch (error) {
         console.error('API Error:', error);
+        throw error;
+    }
+}
+
+export const createTask = async (task: IAddTask): Promise<Task> => {
+    try {
+        const res = await instance.post('/task', task);
+        return res.data[0];
+    } catch (error) {
+        console.error('Error is:', error);
         throw error;
     }
 }

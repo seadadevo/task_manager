@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getTasks, updateTask } from "../services/taskService";
-import type { Task } from "../types";
+import { createTask, getTasks, updateTask } from "../services/taskService";
+import type { IAddTask, Task } from "../types";
 
 export const useTasksStore = defineStore('tasks', () => {
     const tasks = ref<Task[]>([]);
@@ -64,6 +64,15 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
+    const addTask = async (newTask: IAddTask) => {
+        try {
+            await createTask(newTask)
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    }
+
     return {
         tasks,
         currentPage,
@@ -73,6 +82,7 @@ export const useTasksStore = defineStore('tasks', () => {
         fetchTasks,
         nextPage,
         prevPage,
-        toggleTaskComplete
+        toggleTaskComplete,
+        addTask
     }
 })

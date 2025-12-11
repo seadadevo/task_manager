@@ -42,3 +42,13 @@ export interface Task {
 //     "updated_at": "2025-08-25T09:00:00Z"
 //   }
 
+
+
+export interface IAddTask {
+  title: string;
+  category_id: number;
+  description?: string;
+  priority?: 'low' | 'medium' | 'high';
+  due_date: string;
+  image_url?: string;
+}

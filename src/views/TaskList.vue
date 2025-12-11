@@ -1,6 +1,10 @@
 <template>
   <div class="p-8 max-w-[1200px] my-0 mx-auto">
-
+    <router-link to="/add-task"
+          class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm whitespace-nowrap"
+        >
+    Add Task
+    </router-link>
     <select 
             :value="taskStore.selectedCategoryId"
             @change="(e) => {
