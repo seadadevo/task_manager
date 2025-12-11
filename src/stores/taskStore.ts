@@ -95,11 +95,11 @@ export const useTasksStore = defineStore('tasks', () => {
                     ...tasks.value[index], 
                     title: updates.title,
                     description: updates.description,
-                    priority: updates.priority || 'medium',
+                    priority: (updates.priority ?? 'medium') as 'low' | 'medium' | 'high',
                     category_id: updates.category_id,
                     due_date: updates.due_date,
                     image_url: updates.image_url
-                };
+                } as Task; 
             }
         } catch (error) {
             console.error('Error:', error);
