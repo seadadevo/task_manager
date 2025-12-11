@@ -1,11 +1,104 @@
 <template>
-    <div>
-        Add task 
+    <div class="max-w-2xl mx-auto p-6 rounded-lg shadow-md mt-10">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Add Task</h1>
+        <form @submit.prevent="handleSubmit" class="space-y-6">
+            <div>
+                <label class="block test-sm font-medium text-gray-800 mb-1">Title *</label>
+                <input type="text"
+                v-model = "form.title"
+                class= "w-full p-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500 "
+                placeholder="add title.."
+                >
+            </div>
+            <div>
+                <label class="block test-sm font-medium text-gray-800 mb-1">Category *</label>
+                <select
+                v-model="form.category_id"
+                class="w-full p-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500">
+                <option :value="0" disabled>Select a category</option>
+                <option 
+                v-for="cat in categoryStore.categories" :key="cat.id"
+                :value="cat.id">{{ cat.name }}</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block test-sm font-medium text-gray-800 mb-1">Description</label>
+                <textarea 
+                v-model="form.description"
+                rows="3"
+                class="w-full p-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="add details...">
+                </textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block test-sm font-medium text-gray-800 mb-1">Priority</label>
+                    <select 
+                    v-model="form.priority"
+                    class="w-full p-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block test-sm font-medium text-gray-800 mb-1">Due Date</label>
+                    <input type="date"
+                    v-model="form.due_date"
+                    class="w-full p-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                </div>
+            </div>
+
+
+            <div class="flex gap-4 pt-4">
+                <button
+                type="button"
+                @click="$router.push('/')"
+                class="flex-1 py-2 px-4 border border-gray-300 rounded-md">
+                Cancel
+                </button>
+
+                <button
+                type="submit"
+                class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex justify-center items-center gap-2">
+                Add Task
+                </button>
+            </div>
+
+        </form>    
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+    import { ref, reactive, onMounted } from 'vue';
+    import { useRoute, useRouter } from 'vue-router';
+    import { useTasksStore } from '../stores/taskStore';
+    import { useCategoryStore } from '../stores/categoryStore';
+    import type { IAddTask } from '../types';
 
+    const router = useRouter()
+    const taskStore = useTasksStore();
+    const categoryStore = useCategoryStore();
+
+    const form = reactive<IAddTask>({
+        title: '',
+        description: '',
+        category_id: 0, 
+        priority: 'low',
+        due_date: '',
+    })
+
+    onMounted(() => {
+        if(categoryStore.categories.length === 0) {
+            categoryStore.fetchCategories();
+        }
+    })
+    function handleSubmit() {}
 </script>
 
 <style lang="scss" scoped>
