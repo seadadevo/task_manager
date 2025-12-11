@@ -95,7 +95,7 @@ export const useTasksStore = defineStore('tasks', () => {
                     ...tasks.value[index], 
                     title: updates.title,
                     description: updates.description,
-                    priority: updates.priority,
+                    priority: updates.priority || 'medium',
                     category_id: updates.category_id,
                     due_date: updates.due_date,
                     image_url: updates.image_url
